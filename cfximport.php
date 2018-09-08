@@ -65,6 +65,7 @@
    *                   Datenbank und zur LiveConfig-SOAP-API testen)
    * -i                Interaktiv: beim Anlegen eines neuen Kunden/Vertrags
    *                   nach der neuen Kunden-/Vertragsnummer fragen
+   * --mysqluserdb     Name der MySQL Datenbank für das Auslesen des MySQL-Passworts (Default: mysql) 
    * --webserver <server>
    * --mailserver <server>
    * --dbserver <server>
@@ -189,6 +190,7 @@
   if (!isset($OPTS['webserver'])) $OPTS['webserver'] = 'localhost';
   if (!isset($OPTS['mailserver'])) $OPTS['mailserver'] = 'localhost';
   if (!isset($OPTS['dbserver'])) $OPTS['dbserver'] = 'localhost';
+  if (!isset($OPTS['mysqluserdb'])) $OPTS['mysqluserdb'] = 'mysql';
   if (!isset($OPTS['all'])) $OPTS['all'] = false;
   if (!isset($OPTS['i'])) $OPTS['i'] = false;
   if (!isset($OPTS['importlocked'])) $OPTS['importlocked'] = false;
@@ -759,7 +761,7 @@
           # Einrichten der Datenbank zum Vertrag
           # erst MySQL-Passwort auslesen:
           $pwd = NULL;
-          $sql = "SELECT Password from mysql.user where User='" . $result['kunde'] . "' LIMIT 1";
+          $sql = "SELECT Password from " . $OPTS['mysqluserdb'] . ".user where User='" . $result['kunde'] . "' LIMIT 1";
           $res = mysql_query($sql) or die ("Fehler beim Auslesen des Datenbankpassworts: " . mysql_error());
           if ($row = mysql_fetch_assoc($res)) {
             $pwd = $row['Password'];
@@ -1592,6 +1594,7 @@ Verwendung: php cfximport.php -c | -h | --check
                     Datenbank und zur LiveConfig-SOAP-API testen)
   -i                Interaktiv: beim Anlegen eines neuen Kunden/Vertrags nach
                     dessen neuer Kunden-/Vertragsnummer fragen
+  --mysqluserdb     Name der MySQL Datenbank für das Auslesen des MySQL-Passworts (Default: mysql)                  
   --webserver <server>
   --mailserver <server>
   --dbserver <server>
