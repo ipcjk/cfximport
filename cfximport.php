@@ -94,6 +94,7 @@
    *                   Entweder suphp, fcgi oder modphp, default: suphp
    * --verbose         Ausfuehrlichere Informationen waehrend des Imports ausgeben
    * --ignore=<Liste>  ignoriere die angegebenen Vertragsnamen (Komma-getrennt)
+   * --ignorebymail=<Liste>  ignoriere  Kunden mit dieser angegebenen E-Mailadresse (Komma-getrennt)
    * --permissive      beim Import von Kontaktdaten nicht auf Duplikate prüfen
    *                   und Eingabefehler (z.B. Ort/PLZ vertauscht) ignorieren
    *
@@ -147,7 +148,7 @@
   }
 
   # Parsen der angegebenen Optionen und Parameter
-  $OPTS = parseParameters(array('h', 'help', 'check', 'c', 'config', 'a', 'all', 'i', 'importlocked', 'importplans', 'kdnr', 'fixmailquota', 'mergemailaddr', 'php', 'verbose', 'ignore', 'permissive'));
+  $OPTS = parseParameters(array('h', 'help', 'check', 'c', 'config', 'a', 'all', 'i', 'importlocked', 'importplans', 'kdnr', 'fixmailquota', 'mergemailaddr', 'php', 'verbose', 'ignore', 'ignoreByMail', 'permissive'));
   $action = 'import';
 
   foreach ($OPTS as $key => $value) {
@@ -543,8 +544,10 @@
       while ($result = mysql_fetch_assoc($result_query)) {
         # Testen, ob es schon einen Vertrag fuer den $result['kunden'] gibt
         $subscriptionname = $result['kunde'];
+        $emailadresse = $result['emailadresse'];
 
         if (isset($OPTS['ignore']) && in_array($subscriptionname, split(',', $OPTS['ignore']))) continue;
+        if (isset($OPTS['ignorebymail']) && in_array($emailadresse, split(',', $OPTS['ignorebymail']))) continue;
 
         # BEISPIEL: basieren auf Kundennummer automatisch setzen:
         # $subscriptionname = 'k' . $result['kundennummer'];
@@ -1617,6 +1620,7 @@ Verwendung: php cfximport.php -c | -h | --check
                     Entweder suphp, fcgi oder modphp, default: suphp
   --verbose         Ausfuehrlichere Informationen waehrend des Imports ausgeben
   --ignore=<Liste>  ignoriere die angegebenen Vertragsnamen (Komma-getrennt)
+  --ignorebymail=<Liste>  ignoriere  Kunden mit dieser angegebenen E-Mailadresse (Komma-getrennt)
   --permissive      beim Import von Kontaktdaten nicht auf Duplikate prüfen
                     und Eingabefehler (z.B. Ort/PLZ vertauscht) ignorieren
 
