@@ -1443,6 +1443,8 @@
           $data['cid'] = $tmp;
         }
       }
+    } else if ($custdata['anbieter'] != "res0") { 
+    	$data['cid'] = $custdata['anbieter'] . "-" . $data['cid'];
     }
 
     # Kunden anlegen:
