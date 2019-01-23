@@ -96,6 +96,7 @@
    * --verbose         Ausfuehrlichere Informationen waehrend des Imports ausgeben
    * --ignore=<Liste>  ignoriere die angegebenen Vertragsnamen (Komma-getrennt)
    * --ignorebymail=<Liste>  ignoriere  Kunden mit dieser angegebenen E-Mailadresse (Komma-getrennt)
+   * --ignoreCronPaths bei true, versuche nicht Cronpaths zu korrigiert 
    * --permissive      beim Import von Kontaktdaten nicht auf Duplikate prüfen
    *                   und Eingabefehler (z.B. Ort/PLZ vertauscht) ignorieren
    *
@@ -202,6 +203,8 @@
   if (!isset($OPTS['mergemailaddr'])) $OPTS['mergemailaddr'] = false;
   if (!isset($OPTS['verbose'])) $OPTS['verbose'] = false;
   if (!isset($OPTS['dnstemplate'])) $OPTS['dnstemplate'] = 'Standard';
+  if (!isset($OPTS['ignoreCronPaths'])) $OPTS['ignoreCronPaths'] =  false;
+
   $OPTS['defaultmailquota'] = -1;   # falls kein Mailquota beim Anbieter gesetzt ist
 
   if (!isset($OPTS['php'])) {
@@ -728,8 +731,10 @@
               if (preg_match('/^\s*(#|$)/', $line)) continue;
               list($min, $hour, $dom, $month, $dow, $command) = preg_split("/\s+/", trim($line), 6);
               # Verzeichnisnamen von $command anpassen: /var/www/web#/html/ -> /var/www/web#/htdocs/
-              while (preg_match('/\/var\/www\/([^\/]+)\/html(\/.*)?$/', $command)) {
-                $command = preg_replace('/\/var\/www\/([^\/]+)\/html(\/.*)?$/', '/var/www/$1/' . $OPTS['htdocs'] . '$2', $command);
+              if (! $OPTS['ignoreCronPaths'] {
+                while (preg_match('/\/var\/www\/([^\/]+)\/html(\/.*)?$/', $command)) {
+                  $command = preg_replace('/\/var\/www\/([^\/]+)\/html(\/.*)?$/', '/var/www/$1/' . $OPTS['htdocs'] . '$2', $command);
+                }
               }
               $cron['minute']  = trim($min);
               $cron['hour']    = trim($hour);
@@ -1444,7 +1449,7 @@
         }
       }
     } else if ($custdata['anbieter'] != "res0") { 
-    	$data['cid'] = $custdata['anbieter'] . "-" . $data['cid'];
+      $data['cid'] = generateRandomString(9);
     }
 
     # Kunden anlegen:
@@ -1862,6 +1867,17 @@ EOT;
     print "Geben Sie bitte das SOAP-Passwort an: ";
     $CONFIG['pass'] = trim(fgets(STDIN));
   }
+
+  /* Random string generator */
+  function generateRandomString($length = 10) {
+    $characters = '0123456789';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
 
   # <EOF>---------------------------------------------------------------------
 ?>
