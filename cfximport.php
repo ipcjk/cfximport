@@ -1450,6 +1450,8 @@
       }
     } else if ($custdata['anbieter'] != "res0") { 
       $data['cid'] = generateRandomString(9);
+    } else if ($custdata['anbieter'] == "res0") {
+      $data['cid'] = $custdata['kundennummer'];
     }
 
     # Kunden anlegen:
