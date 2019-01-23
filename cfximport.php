@@ -731,7 +731,7 @@
               if (preg_match('/^\s*(#|$)/', $line)) continue;
               list($min, $hour, $dom, $month, $dow, $command) = preg_split("/\s+/", trim($line), 6);
               # Verzeichnisnamen von $command anpassen: /var/www/web#/html/ -> /var/www/web#/htdocs/
-              if (! $OPTS['ignoreCronPaths'] {
+              if (! $OPTS['ignoreCronPaths']) {
                 while (preg_match('/\/var\/www\/([^\/]+)\/html(\/.*)?$/', $command)) {
                   $command = preg_replace('/\/var\/www\/([^\/]+)\/html(\/.*)?$/', '/var/www/$1/' . $OPTS['htdocs'] . '$2', $command);
                 }
