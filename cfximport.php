@@ -37,7 +37,7 @@
    * finden Sie unter
    *
    *    http://www.liveconfig.com/de/kb/5
-   * 
+   *
    * Hilfestellungen zur Verwendung erhalten Sie im LiveConfig-Forum unter
    *    http://www.liveconfig.com/de/forum
    *
@@ -47,7 +47,7 @@
    *                              [ --webserver <server> ]
    *                              [ --mailserver <server> ]
    *                              [ --dbserver <server> ]
-   * 
+   *
    * <kunde> [ <kunde> ...] [ -a, --all ]
    *                   Angabe der Reseller bzw. Kunden, die importiert werden
    *                   sollen (Beispiele: siehe unten)
@@ -65,7 +65,7 @@
    *                   Datenbank und zur LiveConfig-SOAP-API testen)
    * -i                Interaktiv: beim Anlegen eines neuen Kunden/Vertrags
    *                   nach der neuen Kunden-/Vertragsnummer fragen
-   * --mysqluserdb     Name der MySQL Datenbank für das Auslesen des MySQL-Passworts (Default: mysql) 
+   * --mysqluserdb     Name der MySQL Datenbank für das Auslesen des MySQL-Passworts (Default: mysql)
    * --webserver <server>
    * --mailserver <server>
    * --dbserver <server>
@@ -96,7 +96,7 @@
    * --verbose         Ausfuehrlichere Informationen waehrend des Imports ausgeben
    * --ignore=<Liste>  ignoriere die angegebenen Vertragsnamen (Komma-getrennt)
    * --ignorebymail=<Liste>  ignoriere  Kunden mit dieser angegebenen E-Mailadresse (Komma-getrennt)
-   * --ignoreCronPaths bei true, versuche nicht Cronpaths zu korrigiert 
+   * --ignoreCronPaths bei true, versuche nicht Cronpaths zu korrigiert
    * --permissive      beim Import von Kontaktdaten nicht auf Duplikate prüfen
    *                   und Eingabefehler (z.B. Ort/PLZ vertauscht) ignorieren
    *
@@ -160,7 +160,7 @@
         case "help":
           help_message();
           exit(0);
-        
+
         # Serververbindung testen:
         case 'check':
           if ($action != 'import') {
@@ -237,7 +237,7 @@
   # Falls ja, werden Daten daraus geleseen
   # Falls nein, alle Daten werden abgefragt
   # --------------------------------------------------------------------------
-  
+
   if ($action == "config") {
     if (file_exists($CFX_CONFIG_FILE)) {
       # Confixx-Konfiguration aus confixx.conf laden
@@ -253,9 +253,9 @@
     _check_config($CONFIG, $CONFIG_FILE);
     exit(0);
   }
-  
+
   # --------------------------------------------------------------------------
-  # Verbindungsaufbau  mit den Servern 
+  # Verbindungsaufbau  mit den Servern
   # LiveConfig: SOAP-Funktion "TestSayHello()" aufrufen
   # Confixx:    Verbindung mit der Datenbank und Lesen der Anzahl der Kunden
   # Option: --check
@@ -360,7 +360,7 @@
       # Falls ein Reseller vorhanden ist wird der gesamte Datensatz gespeichert
       if ($rows > 0) {
         $result = mysql_fetch_assoc($result_query);
-        # Da hier schon eine Datenbankabfrage erfolgte, koennen wir auch gleich den 
+        # Da hier schon eine Datenbankabfrage erfolgte, koennen wir auch gleich den
         # Datensatz fuer den Reseller speichern
         $anbieter = $result;
       } else {
@@ -371,7 +371,7 @@
         $rows = mysql_num_rows($result_query);
         # Falls ein Kunde vorhanden ist, dann kann man den Anbieter auslesen
         if ($rows == 1) {
-          # Kunde vorhanden 
+          # Kunde vorhanden
           logprint("Reseller fuer Kunden $cust suchen");
           $kunde = mysql_fetch_assoc($result_query);
           # Daten fuer den Reseller des Kunden heraussuchen aus der Datenbank
@@ -568,7 +568,7 @@
 
         $response = _getHostingSubscriptionGet($subscriptionname, $rcustomer_id);
         if ($response == null) {
-          print "Importe Kunde: " . $result['kunde'] . " ... "; 
+          print "Importe Kunde: " . $result['kunde'] . " ... ";
           list($customer_id, $contact_id) =_importCustomer($result, $rcustomer_id);
           print "ok\n";
           ###############################
@@ -589,7 +589,7 @@
           }
           logprint("User-ID: $user_id\n");
           print "\tUser angelegt\n";
-        
+
           ###############################
           # Hosting Vertrag anlegen
           ###############################
@@ -645,7 +645,7 @@
           ###########################
           # Domains einrichten
           ###########################
-          
+
           # Alle Domains auslesen fuer diesen Kunden
           $sql = "SELECT domains.domain, pfad, richtigedomain, domains.kunde, domains.dns, dns.lastchange "
                 ."FROM domains LEFT JOIN dns ON (domains.domain=dns.domain AND domains.kunde=dns.kunde) "
@@ -759,7 +759,7 @@
             }
           }
           mysql_free_result($res);
-           
+
           #############################
           # Datenbanken einrichten
           #############################
@@ -1211,7 +1211,7 @@
           $anzahl++;
         } else {
           $paket['shellacces'] = $shell;
-        }      
+        }
 
         $paket['plan'] = $angebot->name;
 
@@ -1241,16 +1241,16 @@
   #########################################################################################
 
   #----------------------------------------------------
-  # logprint($text) 
+  # logprint($text)
   #
-  # Falls LOGGING auf 1 gesetzt ist, erfolgen Log print 
+  # Falls LOGGING auf 1 gesetzt ist, erfolgen Log print
   # ausgeben
   #----------------------------------------------------
   function logprint($text) {
     global $LOGGING;
     if ($LOGGING == 1) {
       print $text . "\n";
-    } 
+    }
   }
 
 
@@ -1313,7 +1313,7 @@
    */
   function _checkLCServer() {
     global $client;
-  
+
     try {
       $params = array('auth'        => createToken('TestSayHello', NULL),
                       'firstname'   => 'Max',
@@ -1351,7 +1351,7 @@
     if (!$res) {
       print("Fehler bei Datenbankabfrage: " . mysql_error() . "\n");
     } else {
-      $row = mysql_fetch_row($res) or die (mysql_error());; 
+      $row = mysql_fetch_row($res) or die (mysql_error());;
       print "Kundenanzahl: $row[0]\n";
       mysql_free_result($res);
       $status = true;
@@ -1422,6 +1422,7 @@
     }
     logprint("Contact-ID: $contact_id\n");
 
+
     $data = array('auth'      => createToken('CustomerAdd', $cust_id),
                   'owner_c'   => $contact_id,
                   'admin_c'   => $contact_id,
@@ -1448,10 +1449,25 @@
           $data['cid'] = $tmp;
         }
       }
-    } else if ($custdata['anbieter'] != "res0") { 
+    } else if ($custdata['anbieter'] != "res0") {
       $data['cid'] = generateRandomString(9);
     } else if ($custdata['anbieter'] == "res0") {
       $data['cid'] = $custdata['kundennummer'];
+    }
+
+    $get = array('auth' => createToken('CustomerGet', $cust_id),
+		 'cid' => $data['cid']);
+    try {
+      $response = $client->CustomerGet($get);
+      $customer_id = $response->customers->CustomerDetails->id;
+      if($customer_id) {
+      logprint("Customer-ID: $customer_id\n");
+      logprint("Contact-ID: $contact_id\n");
+      return array($customer_id, $contact_id);
+     }
+    } catch (SoapFault $soapFault) {
+      _traceSoapException();
+      die("Error while calling Web Service CustomerAdd: " . $soapFault->faultstring . "\n");
     }
 
     # Kunden anlegen:
@@ -1463,7 +1479,7 @@
       die("Error while calling Web Service CustomerAdd: " . $soapFault->faultstring . "\n");
     }
     logprint("Customer-ID: $customer_id\n");
-    
+
     return array($customer_id, $contact_id);
   }
 
@@ -1517,7 +1533,7 @@
     if ($OPTS['permissive']) $contactdata['permissive'] = true;
 
     return($contactdata);
-  } 
+  }
 
   #-----------------------------------------------------
   # _setHostingPlanAddData
@@ -1529,10 +1545,10 @@
     # Testen ob keine, bash oder scp als shell erlaubt ist
     if ($angebot['shell'] == 0) {
        $shellaccess = 0;
-    } 
+    }
     if ($angebot['shell'] == 1) {
         $shellaccess = 2;
-    } 
+    }
     if ($angebot['scponly'] == 0) {
         $shellaccess = 1;
     }
@@ -1561,7 +1577,7 @@
                 'cronjobs'    => $angebot['maxcronjobs'],
                 'maxusers'    => 1
                 );
-    
+
     if($paket_data['php'] > 0){
       $paket_data['php'] = $OPTS['php'];
     }
@@ -1591,7 +1607,7 @@ Verwendung: php cfximport.php -c | -h | --check
                     Angabe der Reseller bzw. Kunden, die importiert werden
                     sollen. Mit "-a" (oder "--all") werden alle Kunden eines
                     Resellers mit importiert.
-  
+
   Optionen:
   -h, --help        Hilfe ausgeben
   -c, --config      Confixx-Konfiguration wird ausgelesen (aus
@@ -1603,7 +1619,7 @@ Verwendung: php cfximport.php -c | -h | --check
                     Datenbank und zur LiveConfig-SOAP-API testen)
   -i                Interaktiv: beim Anlegen eines neuen Kunden/Vertrags nach
                     dessen neuer Kunden-/Vertragsnummer fragen
-  --mysqluserdb     Name der MySQL Datenbank für das Auslesen des MySQL-Passworts (Default: mysql)                  
+  --mysqluserdb     Name der MySQL Datenbank für das Auslesen des MySQL-Passworts (Default: mysql)
   --webserver <server>
   --mailserver <server>
   --dbserver <server>
@@ -1823,7 +1839,7 @@ Bitte ueberpruefen Sie Ihre Angaben:
 EOT;
 # '
     $finish_config = false;
-    while (1) {      
+    while (1) {
       print "Sind diese Angaben richtig?\nBitte bestaetigen Sie oder kehren Sie zur Konfiguration zurueck! ['j,y,yes,n,no'] <y>";
       $confirm = trim(fgets(STDIN));
       if ($confirm == ''||$confirm == 'j'||$confirm == 'y' ||$confirm == 'yes') {
@@ -1861,7 +1877,7 @@ EOT;
     } else {
        $CONFIG['url'] = "http://" . $lc_server . ":" . $lc_port . "/liveconfig/soap";
     }
-    
+
     # soap_login
     print "Geben Sie bitte das SOAP-Login an: ";
     $CONFIG['user'] = trim(fgets(STDIN));
